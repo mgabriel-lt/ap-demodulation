@@ -5,7 +5,7 @@
  * All Rights Reserved. The underlying technology is protected by PCT Patent
  * Application No. PCT/EP2021/054650.
  *
- * This file is part of the AP demodulation library, which is free software: you can
+ * This file is part of the AP Demodulation library, which is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation in version 2.
  *
@@ -101,7 +101,13 @@ int f_ap_basic (double* s, const struct s_ParamsAP* Par, const double* Ub, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [m_out#] - array with modulator estimates (memory allocated  externally).
  *
@@ -439,7 +445,13 @@ int f_ap_accelerated (double* s, const struct s_ParamsAP* Par, const double* Ub,
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [m_out#] - array with modulator estimates (memory allocated  externally).
  *
@@ -828,7 +840,13 @@ int f_ap_projected (double* s, const struct s_ParamsAP* Par, const double* Ub, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [m_out#] - array with modulator estimates (memory allocated  externally).
  *

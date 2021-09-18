@@ -208,7 +208,7 @@ figure('Name', 'Signal and Modulator')
 
 set(gcf, 'Units', 'centimeters');
 
-set(gcf, 'Position', [15 17 20 15]);
+set(gcf, 'Position', [5 2 20 15]);
 
 
 surf(X,Y,s,'FaceColor','none', 'EdgeColor', [0 0 0], 'EdgeAlpha',0.4, ...

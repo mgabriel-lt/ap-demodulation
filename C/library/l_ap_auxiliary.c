@@ -5,7 +5,7 @@
  * All Rights Reserved. The underlying technology is protected by PCT Patent
  * Application No. PCT/EP2021/054650.
  *
- * This file is part of the AP demodulation library, which is free software: you can
+ * This file is part of the AP Demodulation library, which is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation in version 2.
  *
@@ -271,7 +271,7 @@ int f_ap_interpolation (const double* s, const struct s_ParamsAP* Par, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error.
  *
  * [s_out#] - interpolated signal. The number of dimensions of this array is given by
  *            Par.D.
@@ -532,7 +532,10 @@ int f_ap_s_Ub_init (const double* s, const double* Ub, long* ix, const int D, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error.
+ *
+ *              Upon an error, all memory dynamically allocated in this function is
+ *              freed. The corresponding error message is sent to sderr.
  *
  * [out_s#] - output signal with rearranged placement and +2 elements in the last
  *            dimension to meet the MKL DFT requirements.
@@ -737,7 +740,13 @@ int f_ap_mkl_dft_init (const int D, const long* N, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [dft_handle#] - pointer to the initialized and comitted descriptor handle.
  */
@@ -955,7 +964,13 @@ int f_ap_mkl_dft_PMw (double* s, const int D, const long* N, const long* iL, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag.
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [s#] - pointer to the updated and comitted descriptor handle.
  */
@@ -1065,16 +1080,7 @@ int f_ap_mkl_dft_PMw (double* s, const int D, const long* N, const long* iL, \
         status = DftiCommitDescriptor (*dft_handle);
 
         if (status != DFTI_NO_ERROR) {line=__LINE__-2; exitflag=-2; goto failed;}
-/*printf("\n\n");
-for (i1 = 0; i1 < N[0]; i1++)
-{            
-    for (i2 = 0; i2 < N[1]+2; i2++)
-    
-        printf("%e   ",s[rs[1]*i1+rs[2]*i2]);
-    
-    printf("\n\n");
-}*/
-/*mexErrMsgIdAndTxt("AP:Demodulation","Here we leave!");*/
+
         
         
         /* Forward FFT */
@@ -1082,17 +1088,9 @@ for (i1 = 0; i1 < N[0]; i1++)
         status = DftiComputeForward (*dft_handle, s);
         
         if (status != DFTI_NO_ERROR) {line=__LINE__-2; exitflag=-2; goto failed;}
-/*printf("\n\n");
-for (i1 = 0; i1 < N[0]; i1++)
-{            
-    for (i2 = 0; i2 < N[1]+2; i2++)
-    
-        printf("%e   ",s[rs[1]*i1+rs[2]*i2]);
-    
-    printf("\n\n");
-}*/
+
         
-/*printf("iL=%ld,iR=%ld\n",iL[0],iR[0]);*/
+        
         /* Projection onto Mw in the Fourier domain */
         
         if (D == 2)
@@ -1148,16 +1146,8 @@ for (i1 = 0; i1 < N[0]; i1++)
         
             goto failed;
         }
-/*printf("\n\n");
-for (i1 = 0; i1 < N[0]; i1++)
-{            
-    for (i2 = 0; i2 < N[1]+2; i2++)
-    
-        printf("%e   ",s[rs[1]*i1+rs[2]*i2]);
-    
-    printf("\n\n");
-}*/
-/*mexErrMsgIdAndTxt("AP:Demodulation","Here we leave!");*/
+
+        
         
         /* Update of strides of the FFT descriptor for the backward transform */
         
@@ -1185,16 +1175,6 @@ for (i1 = 0; i1 < N[0]; i1++)
         status = DftiComputeBackward (*dft_handle, s);
         
         if (status != DFTI_NO_ERROR) {line=__LINE__-2; exitflag=-2; goto failed;}
-    /*printf("\n\n");
-for (i1 = 0; i1 < N[0]; i1++)
-{            
-    for (i2 = 0; i2 < N[1]+2; i2++)
-    
-        printf("%e   ",s[rs[1]*i1+rs[2]*i2]);
-    
-    printf("\n\n");
-}*/
-/*mexErrMsgIdAndTxt("AP:Demodulation","Here we leave!");*/
     }
     
     

@@ -5,7 +5,7 @@
  * All Rights Reserved. The underlying technology is protected by PCT Patent
  * Application No. PCT/EP2021/054650.
  *
- * This file is part of the AP demodulation library, which is free software: you can
+ * This file is part of the AP Demodulation library, which is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation in version 2.
  *
@@ -178,9 +178,9 @@
     
     #ifdef _WIN32
     
-        #define AP_STR_NL "\r\n"
+        #define AP_STR_NL "\r"
     
-        #define AP_STR_NL2 "\r\n\r\n"
+        #define AP_STR_NL2 "\r\r"
     
     #else
     

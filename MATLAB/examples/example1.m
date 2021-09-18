@@ -133,7 +133,7 @@ figure('Name', 'Signal and Modulator')
 
 set(gcf, 'Units', 'centimeters');
 
-set(gcf, 'Position', [8 17 35 7]);
+set(gcf, 'Position', [0 10 35 7]);
 
 
 plot(T,abs(s),'LineWidth',0.75)
@@ -167,7 +167,7 @@ figure('Name', 'Carrier')
 
 set(gcf, 'Units', 'centimeters');
 
-set(gcf, 'Position', [8 6 35 7]);
+set(gcf, 'Position', [0 1 35 7]);
 
 
 plot(T,c,'k','LineWidth',2)

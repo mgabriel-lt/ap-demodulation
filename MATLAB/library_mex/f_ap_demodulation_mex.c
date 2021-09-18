@@ -5,7 +5,7 @@
  * All Rights Reserved. The underlying technology is protected by PCT Patent
  * Application No. PCT/EP2021/054650.
  *
- * This file is part of the AP demodulation library, which is free software: you can
+ * This file is part of the AP Demodulation library, which is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation in version 2.
  *
@@ -46,7 +46,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 /* S H O R T   D E S C R I P T I O N
  *
  * f_ap_demodulation_mex estimates the amplitude modulator of a given signal in the
- * offline mode by using the AP demodulation approach formulated and developed in
+ * offline mode by using the AP Demodulation approach formulated and developed in
  *
  *   M. Gabrielaitis. "Fast and Accurate Amplitude Demodulation of Wideband Signals,"
  *   IEEE Transactions on Signal Processing, vol. 69, pp. 4039-4054, 2021. DOI:
@@ -57,7 +57,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
  *
  * See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
  * code and user-friendly explanations on the working principle, domains of
- * application, and advice on the usage of different AP demodulation algorithms in
+ * application, and advice on the usage of different AP Demodulation algorithms in
  * practice.
  */
     
