@@ -138,7 +138,7 @@ figure('Name', 'Signal and Modulator')
 
 set(gcf, 'Units', 'centimeters');
 
-set(gcf, 'Position', [8 17 35 7]);
+set(gcf, 'Position', [0 2 35 7]);
 
 
 plot(t,abs(s),'o-','LineWidth',0.75,'MarkerSize',2)

@@ -5,7 +5,7 @@
  * All Rights Reserved. The underlying technology is protected by PCT Patent
  * Application No. PCT/EP2021/054650.
  *
- * This file is part of the AP demodulation library, which is free software: you can
+ * This file is part of the AP Demodulation library, which is free software: you can
  * redistribute it and/or modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation in version 2.
  *
@@ -55,7 +55,7 @@ int f_ap_demodulation (double* s, struct s_ParamsAP* Par, double* Ub, \
 {
 /* S H O R T   D E S C R I P T I O N
  *
- * Performs demodulation of the input signal by using the AP demodulation approach
+ * Performs demodulation of the input signal by using the AP Demodulation approach
  * formulated and developed in
  *
  *   M. Gabrielaitis. "Fast and Accurate Amplitude Demodulation of Wideband Signals,"
@@ -67,7 +67,7 @@ int f_ap_demodulation (double* s, struct s_ParamsAP* Par, double* Ub, \
  *
  * See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
  * code and user-friendly explanations on the working principle, domains of
- * application, and advice on the usage of different AP demodulation algorithms in
+ * application, and advice on the usage of different AP Demodulation algorithms in
  * practice.
  */
 
@@ -143,7 +143,13 @@ int f_ap_demodulation (double* s, struct s_ParamsAP* Par, double* Ub, \
 
 /* O U T P U T   A R G U M E N T S
  *
- * [exitflag] - exit flag (non zero value indicates an error).
+ * [exitflag] - exit flag: exitflag=0 - no error, exitflag=-1 - out of memory error,
+ *                         exitflag=-2 - error with allocating the MKL DFT's
+ *                         descriptor, exitflag=1 - error with input arguments.
+ *
+ *              Upon an error, all memory dynamically allocated in this function or
+ *              functions called by this function is freed. The corresponding error
+ *              message is sent to sderr.
  *
  * [out_m#] - array with modulator estimates at algorithm iterations indicated by
  *            Par.im (memory allocated  externally). The modulator estimates are
