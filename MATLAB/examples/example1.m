@@ -19,8 +19,10 @@
 % A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
 % licensing opportunities.
 %
-% All other inquiries should be directed to the author, Mantas Gabrielaitis,
-% mgabriel@ist.ac.at
+% See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+% code and user-friendly explanations on the working principle, domains of
+% application, and advice on the usage of different AP Demodulation algorithms in
+% practice.
 
 
 
@@ -30,14 +32,14 @@
 % carrier and a sinusoidal modulator is generated and demodulated by using the
 % AP-Basic algorithm. The inferred modulator and carriers are then compared with the
 % predefined ones. This example illustrates application of the functions
-% 'f_ap_demodulation' and 'f_ap_demodulation_mex' in its simplest format, when the
+% 'f_apd_demodulation' and 'f_apd_demodulation_mex' in their simplest form, when the
 % signal is sampled uniformly, and when only the final estimates of the modulator and
 % infeasibility error are required.
 
 
 close all
 
-clear all
+clear all %#ok<CLALL>
 
 
 
@@ -49,7 +51,7 @@ fType = 'm'; % select between 'm' and 'mex'
 
 % Paths to the m and mex functions that perform AP-demodulation
 
-addpath ../library_m ../library_mex
+addpath ../libm ../libmex
 
 
 
@@ -65,13 +67,13 @@ T = linspace(0,25,n)';
 
 
 
-% Modulator (nonnegative sinusoidal)
+% Modulator (a nonnegative cosine)
 
 m = (1.01+cos(2*pi*T)) / 2.01; 
 
 
 
-% Carrier (harmonic)
+% Carrier (a harmonic signal)
 
 c = zeros(n,1);
 
@@ -99,29 +101,35 @@ s = m .* c;
 
 
 
-% Demodulation
+% Handle to the chosen demodulation function (m-file or mex)
 
 if strcmpi(fType, 'm')
 
-    fDemod = @(x,y) f_ap_demodulation (x, y);
+    fDemod = @(x,y) f_apd_demodulation (x, y);
     
 elseif strcmpi(fType, 'mex')
     
-    fDemod = @(x,y) f_ap_demodulation_mex (x, y);
+    fDemod = @(x,y) f_apd_demodulation_mex (x, y);
     
 end
 
 
-Par.Al = 'B';
 
-Par.Fs = 1/(T(2)-T(1));
+% Demodulation control parameters
 
-Par.Fc = 1.5;
+Par.Al = 'B'; % algorithm ('B' -> AP-Basic)
 
-Par.Et = 10^-5;
+Par.Fs = 1/(T(2)-T(1)); % sampling frequency
 
-Par.Ni = 10^3;
+Par.Fc = 1.5; % cutoff frequency
 
+Par.Et = 10^-5; % infeasibility error tolerance
+
+Par.Ni = 10^3; % maximum iteration number
+
+
+
+% Demodulation
 
 [m_, e, iter, tcpu] = fDemod (s, Par);
 

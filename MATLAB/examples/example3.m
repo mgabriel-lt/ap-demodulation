@@ -19,8 +19,10 @@
 % A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
 % licensing opportunities.
 %
-% All other inquiries should be directed to the author, Mantas Gabrielaitis,
-% mgabriel@ist.ac.at
+% See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+% code and user-friendly explanations on the working principle, domains of
+% application, and advice on the usage of different AP Demodulation algorithms in
+% practice.
 
 
 
@@ -30,13 +32,13 @@
 % white-noise carrier and an LP-random modulator is generated and demodulated by
 % using the AP-Projected algorithm. The inferred modulator is then compared with the
 % predefined one. This example illustrates application of the functions
-% 'f_ap_demodulation' and 'f_ap_demodulation_mex' for demodulating nonuniformly
-% sampled signals.
+% 'f_apd_demodulation' and 'f_apd_demodulation_mex' to demodulate nonuniformly sampled
+% signals.
 
 
 close all
 
-clear all
+clear all %#ok<CLALL>
 
 
 
@@ -48,7 +50,7 @@ fType = 'mex'; % select between 'm' and 'mex'
 
 % Paths to the m and mex functions that perform AP-demodulation
 
-addpath ../library_m ../library_mex
+addpath ../libm ../libmex
 
 
 
@@ -68,7 +70,7 @@ t = 10 * t(1:end-1) / t(end);
 
 
 
-% Modulator (LP-random)
+% Modulator (a low-pass-randomsignal)
 
 m = zeros(n,1);
 
@@ -90,7 +92,7 @@ m = m / max(m(:));
 
 
 
-% Carrier (sinusoidal)
+% Carrier (a sine)
 
 c = sin(2*pi*5*t);
 
@@ -102,31 +104,37 @@ s = c .* m;
 
 
 
-% Demodulation
+% Handle to the chosen demodulation function (m-file or mex)
 
 if strcmpi(fType, 'm')
 
-    fDemod = @(x,y,z) f_ap_demodulation (x, y, [], z);
+    fDemod = @(x,y,z) f_apd_demodulation (x, y, [], z);
     
 elseif strcmpi(fType, 'mex')
     
-    fDemod = @(x,y,z) f_ap_demodulation_mex (x, y, [], z);
+    fDemod = @(x,y,z) f_apd_demodulation_mex (x, y, [], z);
     
 end
 
 
-Par.Al = 'P';
 
-Par.Fs = 1 / mean(diff(t));
+% Demodulation control parameters
 
-Par.Fc = 25 * Par.Fs / (n*8);
+Par.Al = 'P'; % algorithm
 
-Par.Et = 10^-4;
+Par.Fs = 1 / mean(diff(t)); % sampling frequency
 
-Par.Ni = 3*10^4;
+Par.Fc = 25 * Par.Fs / (n*8); % cutoff frequency
 
-Par.Nr = n * 8;
+Par.Et = 10^-4; % infeasibility error tolerance
 
+Par.Ni = 3*10^4; % maximum iteration number
+
+Par.Nr = n * 8; % number of sample points on the interpolation grid
+
+
+
+% Demodulation
 
 [m_, e, Niter, tcpu] = fDemod (s, Par, t);
 
@@ -164,3 +172,4 @@ box('off')
 legend({'$\bf{|s|}$','$\bf{m}$','$\hat{\bf{m}}$'}, 'Interpreter','latex', ...
     'Location',[0.40, 0.75, 0.1, 0.1], 'FontSize',11)
 
+tcpu

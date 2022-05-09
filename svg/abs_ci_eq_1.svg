@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="vertical-align: -0.564ex"
+   width="7.051ex"
+   height="2.26ex"
+   role="img"
+   focusable="false"
+   viewBox="0 -749.5 3116.5 999"
+   id="svg4326"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="abs_ci_eq_1.svg">
+  <metadata
+     id="metadata4369">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1867"
+     inkscape:window-height="1056"
+     id="namedview4367"
+     showgrid="false"
+     inkscape:zoom="0.19124017"
+     inkscape:cx="2992.9869"
+     inkscape:cy="680.54916"
+     inkscape:window-x="53"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4326" />
+  <defs
+     id="defs4328">
+    <path
+       id="MJX-1-TEX-N-7C"
+       d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z" />
+    <path
+       id="MJX-1-TEX-I-1D450"
+       d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z" />
+    <path
+       id="MJX-1-TEX-I-1D456"
+       d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z" />
+    <path
+       id="MJX-1-TEX-N-3D"
+       d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z" />
+    <path
+       id="MJX-1-TEX-N-31"
+       d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" />
+  </defs>
+  <g
+     stroke="currentColor"
+     fill="currentColor"
+     stroke-width="0"
+     transform="matrix(1 0 0 -1 0 0)"
+     id="g4335">
+    <g
+       data-mml-node="math"
+       id="g4337">
+      <g
+         data-mml-node="mo"
+         id="g4339">
+        <use
+           xlink:href="#MJX-1-TEX-N-7C"
+           id="use4341"
+           style="fill:#262626" />
+      </g>
+      <g
+         data-mml-node="msub"
+         transform="translate(278, 0)"
+         id="g4343">
+        <g
+           data-mml-node="mi"
+           id="g4345">
+          <use
+             xlink:href="#MJX-1-TEX-I-1D450"
+             id="use4347"
+             style="fill:#262626" />
+        </g>
+        <g
+           data-mml-node="mi"
+           transform="translate(433, -150) scale(0.707)"
+           id="g4349">
+          <use
+             xlink:href="#MJX-1-TEX-I-1D456"
+             id="use4351"
+             style="fill:#262626" />
+        </g>
+      </g>
+      <g
+         data-mml-node="TeXAtom"
+         data-mjx-texclass="ORD"
+         transform="translate(1005, 0)"
+         id="g4353">
+        <g
+           data-mml-node="mo"
+           id="g4355">
+          <use
+             xlink:href="#MJX-1-TEX-N-7C"
+             id="use4357"
+             style="fill:#262626" />
+        </g>
+      </g>
+      <g
+         data-mml-node="mo"
+         transform="translate(1560.7, 0)"
+         id="g4359">
+        <use
+           xlink:href="#MJX-1-TEX-N-3D"
+           id="use4361"
+           style="fill:#262626" />
+      </g>
+      <g
+         data-mml-node="mn"
+         transform="translate(2616.5, 0)"
+         id="g4363">
+        <use
+           xlink:href="#MJX-1-TEX-N-31"
+           id="use4365"
+           style="fill:#262626" />
+      </g>
+    </g>
+  </g>
+</svg>

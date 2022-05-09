@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="vertical-align: -0.186ex"
+   width="2.787ex"
+   height="1.505ex"
+   role="img"
+   focusable="false"
+   viewBox="0 -583 1232 665"
+   id="svg13789"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="minus_s_bold_dark.svg">
+  <metadata
+     id="metadata13811">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1867"
+     inkscape:window-height="1056"
+     id="namedview13809"
+     showgrid="false"
+     inkscape:zoom="0.24188312"
+     inkscape:cx="616"
+     inkscape:cy="332.5"
+     inkscape:window-x="53"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg13789" />
+  <defs
+     id="defs13791">
+    <path
+       id="MJX-1-TEX-N-2212"
+       d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z" />
+    <path
+       id="MJX-1-TEX-B-1D42C"
+       d="M38 315Q38 339 45 360T70 404T127 440T223 453Q273 453 320 436L338 445L357 453H366Q380 453 383 447T386 403V387V355Q386 331 383 326T365 321H355H349Q333 321 329 324T324 341Q317 406 224 406H216Q123 406 123 353Q123 334 143 321T188 304T244 294T285 286Q305 281 325 273T373 237T412 172Q414 162 414 142Q414 -6 230 -6Q154 -6 117 22L68 -6H58Q44 -6 41 0T38 42V73Q38 85 38 101T37 122Q37 144 42 148T68 153H75Q87 153 91 151T97 147T103 132Q131 46 220 46H230Q257 46 265 47Q330 58 330 108Q330 127 316 142Q300 156 284 162Q271 168 212 178T122 202Q38 243 38 315Z" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Invert"
+       id="filter14353">
+      <feColorMatrix
+         type="hueRotate"
+         values="180"
+         result="color1"
+         id="feColorMatrix14355" />
+      <feColorMatrix
+         values="-1 0 0 0 1 0 0 -1 0 1 0 -1 0 0 1 -0.21 -0.72 -0.07 2 0 "
+         result="color2"
+         id="feColorMatrix14357" />
+    </filter>
+  </defs>
+  <g
+     stroke="currentColor"
+     fill="currentColor"
+     stroke-width="0"
+     transform="matrix(1 0 0 -1 0 0)"
+     id="g13795"
+     style="fill:#262626;stroke:#262626;filter:url(#filter14353)">
+    <g
+       data-mml-node="math"
+       id="g13797"
+       style="fill:#262626;stroke:#262626">
+      <g
+         data-mml-node="mo"
+         id="g13799"
+         style="fill:#262626;stroke:#262626">
+        <use
+           xlink:href="#MJX-1-TEX-N-2212"
+           id="use13801"
+           style="fill:#262626;stroke:#262626" />
+      </g>
+      <g
+         data-mml-node="TeXAtom"
+         data-mjx-texclass="ORD"
+         transform="translate(778, 0)"
+         id="g13803"
+         style="fill:#262626;stroke:#262626">
+        <g
+           data-mml-node="mi"
+           id="g13805"
+           style="fill:#262626;stroke:#262626">
+          <use
+             xlink:href="#MJX-1-TEX-B-1D42C"
+             id="use13807"
+             style="fill:#262626;stroke:#262626" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -19,23 +19,26 @@
 % A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
 % licensing opportunities.
 %
-% All other inquiries should be directed to the author, Mantas Gabrielaitis,
-% mgabriel@ist.ac.at
+% See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+% code and user-friendly explanations on the working principle, domains of
+% application, and advice on the usage of different AP Demodulation algorithms in
+% practice.
 
 
 
 % EXAMPLE 2
 %
 % In this example, a synthetic 2D amplitude-modulated signal built of a random-peaks
-% carrier and an LP-random-field modulator is generated and demodulated by using the
-% AP-Accelerated algorithm. The inferred modulator is then compared with the
-% predefined one. This example illustrates an application of the functions
-% 'f_ap_demodulation' and 'f_ap_demodulation_mex' for demodulating 2D signals.
+% carrier and a low-pass-random-field modulator is generated and demodulated by using
+% the AP-Accelerated algorithm. The inferred modulator is then compared with the
+% predefined one. This example illustrates application of the functions
+% 'f_apd_demodulation' and 'f_apd_demodulation_mex' in the context of 2D signal
+% demodulation.
 
 
 close all
 
-clear all
+clear all %#ok<CLALL>
 
 
 
@@ -47,7 +50,7 @@ fType = 'mex'; % select between 'm' and 'mex'
 
 % Paths to the m and mex functions that perform AP-demodulation
 
-addpath ../library_m ../library_mex
+addpath ../libm ../libmex
 
 
 
@@ -61,7 +64,7 @@ n = size(X,1);
 
 
 
-% Modulator (LP-random-field)
+% Modulator (a low-pass-random-field)
 
 m = zeros(size(X));
 
@@ -88,13 +91,13 @@ m = m / max(m(:));
 
 
 
-% Subsampled modulator
+% Subsampled modulator (for vizualization purposes)
 
 m2 = interp2(X,Y,m,X2,Y2);
 
 
 
-% Carrier (random peaks)
+% Carrier (a random-peaks signal)
 
 cc = [0.2220, 0.2067, 0.4884, 0.7659, 0.2968, 0.0807, 0.4413, 0.8799, 0.4142, ...
 0.6288, 0.5999, 0.2847, 0.3276, 0.1656, 0.9602, 0.0243, 0.6998, 0.0229, ...
@@ -174,29 +177,35 @@ s = c .* m;
 
 
 
-% Demodulation
+% Handle to the chosen demodulation function (m-file or mex)
 
 if strcmpi(fType, 'm')
 
-    fDemod = @(x,y) f_ap_demodulation (x, y);
+    fDemod = @(x,y) f_apd_demodulation (x, y);
     
 elseif strcmpi(fType, 'mex')
     
-    fDemod = @(x,y) f_ap_demodulation_mex (x, y);
+    fDemod = @(x,y) f_apd_demodulation_mex (x, y);
     
 end
 
 
-Par.Al = 'A';
 
-Par.Fs = [n n];
+% Demodulation control parameters
 
-Par.Fc = [4 4];
+Par.Al = 'A'; % algorithm
 
-Par.Et = 10^-6;
+Par.Fs = [n n]; % sampling frequencies along each dimension
 
-Par.Ni = 10^2;
+Par.Fc = [4 4]; % cutoff frequencies along each dimension
 
+Par.Et = 10^-6; % infeasibility error tolerance
+
+Par.Ni = 10^2; % maximum iteration number
+
+
+
+% Demodulation
 
 [m_, e, iter, tcpu] = fDemod (s, Par);
 

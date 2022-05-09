@@ -19,8 +19,10 @@
 % A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
 % licensing opportunities.
 %
-% All other inquiries should be directed to the author, Mantas Gabrielaitis,
-% mgabriel@ist.ac.at
+% See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+% code and user-friendly explanations on the working principle, domains of
+% application, and advice on the usage of different AP Demodulation algorithms in
+% practice.
 
 
 
@@ -29,15 +31,15 @@
 % In this example, a synthetic 1D amplitude-modulated signal built from a
 % regular-spikes carrier and two LP-random modulators is generated and demodulated by
 % using the AP-Basic algorithm. The two modulators are used to shape the lower and
-% upper envelopes of the signal. The inferred modulators are compared with the
+% upper envelopes of the signal. The inferred envelopes are compared with the
 % predefined ones. This example illustrates how to infer the upper and lower
-% envelopes of a signal by using functions 'f_ap_demodulation' and
-% 'f_ap_demodulation_mex'.
+% envelopes of a signal by using the functions 'f_apd_demodulation' and
+% 'f_apd_demodulation_mex'.
 
 
 close all
 
-clear all
+clear all %#ok<CLALL>
 
 
 
@@ -49,7 +51,7 @@ fType = 'm'; % select between 'm' and 'mex'
 
 % Paths to the m and mex functions that perform AP-demodulation
 
-addpath ../library_m ../library_mex
+addpath ../libm ../libmex
 
 
 
@@ -65,7 +67,7 @@ T = linspace(0,10,n)';
 
 
 
-% Modulators (LP-random)
+% Modulators corresponding to upper & lower envelopes (low-pass-random signals)
 
 m1 = zeros(n,1);
 
@@ -99,7 +101,7 @@ m2 = m2 / max(m2(:)) / 2;
 
 
 
-% Carrier (regular spikes)
+% Carrier (a regular spike-train signal)
 
 ci = 4:32:n;
 
@@ -123,47 +125,57 @@ s = c1 .* m1 + c2 .* m2;
 
 
 
-% Demodulation
+% Handle to the chosen demodulation function (m-file or mex)
 
 if strcmpi(fType, 'm')
 
-    fDemod = @(x,y) f_ap_demodulation (x, y);
+    fDemod = @(x,y) f_apd_demodulation (x, y);
     
 elseif strcmpi(fType, 'mex')
     
-    fDemod = @(x,y) f_ap_demodulation_mex (x, y);
+    fDemod = @(x,y) f_apd_demodulation_mex (x, y);
     
 end
 
 
-Par.Al = 'B';
 
-Par.Fs = 1 / (T(2)-T(1));
+% Demodulation control parameters
 
-Par.Fc = 15 * Par.Fs / n;
+Par.Al = 'B'; % algorithm
 
-Par.Et = 10^-6;
+Par.Fs = 1 / (T(2)-T(1)); % sampling frequency
 
-Par.Ni = 10^3;
+Par.Fc = 15 * Par.Fs / n; % cutoff frequency
+
+Par.Et = 10^-6; % infeasibility error tolerance
+
+Par.Ni = 10^3; % maximum iteration number
 
 
-smmin = min(-s);
 
-[m1_, e1] = fDemod (-s-smmin, Par);
-
-m1_ = -m1_ - smmin;
+% Estimating the upper envelope
 
 smin = min(s);
 
-[m2_, e2] = fDemod (s-smin, Par);
+[m1_, e1] = fDemod (s-smin, Par);
 
-m2_ = m2_ + smin;
+m1_ = m1_ + smin;
 
 
 
-% Visualization: signal and modulator
+% Estimating the lower envelope
 
-figure('Name', 'Signal and Modulators')
+smmin = min(-s);
+
+[m2_, e2] = fDemod (-s-smmin, Par);
+
+m2_ = -m2_ - smmin;
+
+
+
+% Visualization: signal and envelopes
+
+figure('Name', 'Signal and Envelopes')
 
 set(gcf, 'Units', 'centimeters');
 
@@ -194,7 +206,7 @@ axis([0 10 -0.5 1])
 box('off')
 
 
-legend([pl(1:2) pl(4:5)], {'$\bf{|s|}$','$\bf{m}$ lower and upper',...
-    '$\hat{\bf{m}}$ lower','$\hat{\bf{m}}$ upper'}, 'Interpreter','latex', ...
+legend([pl(1:2) pl(4:5)], {'$\bf{|s|}$','$\bf{m}$ upper and lower',...
+    '$\hat{\bf{m}}$ upper','$\hat{\bf{m}}$ lower'}, 'Interpreter','latex', ...
     'Location',[0.53, 0.80, 0.1, 0.1], 'FontSize',11)
 

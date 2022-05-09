@@ -19,8 +19,10 @@
  * A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
  * licensing opportunities.
  *
- * All other inquiries should be directed to the author, Mantas Gabrielaitis,
- * mgabriel@ist.ac.at
+ * See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+ * code and user-friendly explanations on the working principle, domains of
+ * application, and advice on the usage of different AP Demodulation algorithms in
+ * practice.
  */
 
 
@@ -28,19 +30,24 @@
 /* EXAMPLE 2
  *
  * In this example, a synthetic 2D amplitude-modulated signal built of a random-peaks
- * carrier and an LP-random-field modulator is generated and demodulated by using the
- * AP-Accelerated algorithm. Sample points of the the predefined and inferred
- * modulators and carriers are then written into a text file for further analysis.
- * This example illustrates application of the function 'f_ap_demodulation' for
- * demodulating 2D signals. */
+ * carrier and a low-pass-random-field modulator is generated and demodulated by
+ * using the AP-Accelerated algorithm. Sample points of the the predefined and
+ * inferred modulators and carriers are then written to a text file for further
+ * analysis. This example illustrates application of the function 'f_apd_demodulation'
+ * in the context of 2D signal demodulation.
+ * 
+ * Compile this program by using Option 1 described in the documentation.
+ */
 
 
+
+#include <stdlib.h>
 
 #include <stdio.h>
 
 #include <math.h>
 
-#include "f_ap_demodulation.c"
+#include "f_apd_demodulation.c"
 
 
 
@@ -59,23 +66,77 @@
 int main(void)
 {
 
-    /* Declarations and initializations */
+    /* File pointer */
+
+    FILE *fid;
     
-    int line;
-    
+
+
+    /* Exit flag */
+
     int exitflag = 0;
+
+
+
+    /* Sets f_apd_demodulation to return control to the calling f-tion upon error */
+
+    f_apd_set_errexit(0);
     
     
-    long i0, i1, j, i_lin, iter, n[2];
+
+    /* Iteration variables */
+
+    long i0;
     
-    double dt[2];
+    long i1;
     
-    double *m=NULL, *c=NULL, *s=NULL, *Ub=NULL, *t=NULL;
+    long j;
     
-    double *out_m=NULL, *out_c=NULL, *out_e=NULL;
+    long i_lin;
     
+    long iter;
+
+    
+    
+    /* Number of sample points along each dimension */
+
+    long n[2] = {201, 201};
+
+
+    
+    /* Time steps along each dimension */
+
+    double dt[2] = {0.005, 0.005};
+
+
+    
+    /* Modulator (a low-pass-random-field) */
+
     double w[] = {0.5173, 0.9470, 0.7655, 0.2824, 0.2210, 0.6862, 0.1671, 0.3924, \
                   0.6181, 0.4119, 0.0025, 0.8840};
+
+    double *m = (double*) calloc(n[0]*n[1], sizeof(double));
+
+    for (i0=0; i0<n[0]; i0++)
+
+        for (i1=0; i1<n[1]; i1++)
+        {
+            i_lin = i0 + n[0]*i1;
+
+            for (j=0; j<12; j++)
+
+                m[i_lin] = m[i_lin] + w[j] * \
+                    cos(2*M_PI*(i0/(double)n[0]*(j/3)+i1/(double)n[1]*(j%3))+w[j]);
+
+            m[i_lin] = m[i_lin] + 2.358230981567323;
+
+            m[i_lin] = m[i_lin] / 7.984786428632511;
+
+        }
+
+
+
+    /* Carrier (a random peaks signal) */
     
     double cc[] = {0.2220, 0.2067, 0.4884, 0.7659, 0.2968, 0.0807, 0.4413, 0.8799, \
                    0.4142, 0.6288, 0.5999, 0.2847, 0.3276, 0.1656, 0.9602, 0.0243, \
@@ -145,63 +206,8 @@ int main(void)
                    0.7248, 0.9140, 0.7688, 0.5681, 0.3609, 0.6887, 0.9962, 0.4963, \
                    0.6052, 0.5642, 0.1326, 0.1580, 0.0161, 0.7922, 0.4014, 0.0568, \
                    0.3983, 0.3021, 0.1127, 0.3214};
-                  
-    struct s_ParamsAP Par;
-    
-    Par.Fs = NULL; Par.Fc = NULL; Par.Ns = NULL; Par.im = NULL; Par.ie = NULL;
-    
-    FILE *fid;
 
-
-    
-    /* Number of sample points in each dimension */
-
-    n[0] = 201;
-    
-    n[1] = 201;
-
-
-    
-    /* Time steps */
-
-    dt[0] = 0.005;
-    
-    dt[1] = 0.005;
-
-
-    
-    /* Modulator (LP-random-field) */
-
-    m = (double*) calloc(n[0]*n[1], sizeof(double));
-    
-    if (m == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
-
-    for (i0=0; i0<n[0]; i0++)
-
-        for (i1=0; i1<n[1]; i1++)
-        {
-            i_lin = i0 + n[0]*i1;
-
-            for (j=0; j<12; j++)
-
-                m[i_lin] = m[i_lin] + w[j] * \
-                        cos(2*M_PI*(i0/(double)n[0]*(j/3)+i1/(double)n[1]*(j%3))+w[j]);
-
-            m[i_lin] = m[i_lin] + 2.358230981567323;
-
-            m[i_lin] = m[i_lin] / 7.984786428632511;
-
-        }
-
-
-
-    /* Carrier (random peaks) */
-
-    c = (double*) calloc(n[0]*n[1], sizeof(double));
-    
-    if (c == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
+    double *c = (double*) calloc(n[0]*n[1], sizeof(double));
 
     for (j=0; j<270; j++)
     
@@ -219,10 +225,7 @@ int main(void)
     
     /* Signal */
 
-    s = (double*) malloc(n[0]*n[1]*sizeof(double));
-    
-    if (s == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
+    double *s = (double*) malloc(n[0]*n[1]*sizeof(double));
 
     j = n[0]*n[1];
     
@@ -234,101 +237,77 @@ int main(void)
 
     /* Demodulation parameters */
 
-    Par.Al = 'A';
-    
-    Par.D = 2;
+    struct strAPD_Par Par;
 
+    Par.Al = 'A';       // algorithm ('A'-> AP-Accelerated)
     
-    Par.Fs = (double*) malloc(2*sizeof(double));
-    
-    if (Par.Fs == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
-    Par.Fs[0] = n[0];
+    Par.D = 2;          // dimension of the signal
+
+    Par.Fs[0] = n[0];   // sampling frequencies along each dimension
     
     Par.Fs[1] = n[1];
     
-
-    Par.Fc = (double*) malloc(2*sizeof(double));
-    
-    if (Par.Fc == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
-    Par.Fc[0] = 4;
+    Par.Fc[0] = 4;      // cutoff frequencies along each dimension
     
     Par.Fc[1] = 4;
-    
 
-    Par.Et = 1e-6;
+    Par.Et = 1e-6;      // infeasibility error tolerance
 
-    Par.Ni = 1e+2;
+    Par.Ni = 1e+2;      // maximum number of iterations
     
-    
-    Par.Ns = (long*) malloc(2*sizeof(long));
-    
-    if (Par.Ns == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-
-    Par.Ns[0] = n[0];
+    Par.Ns[0] = n[0];   // numbers of sample points along each dimension
     
     Par.Ns[1] = n[1];
     
-
-    Par.Cp = 1;
+    Par.Cp = 1;         // compression parameter (=1 -> no compression)
     
+    Par.Br = 1;         // termination of AP-A upon numerical instability
+
+
+    Par.im = (long*) malloc(2*sizeof(long)); // iterations to save modulator
+                                             // estimates at; here, we ask for
+    Par.im[0] = 1;                           // estimate at the last iteration only
+                                             
+    Par.im[1] = Par.Ni;
+
+
+    Par.ie = (long*) malloc(2*sizeof(long)); // iterations to save infeasibility
+                                             // error estimates at; here, we ask for
+    Par.ie[0] = 1;                           // estimate at the last iteration only
     
-    Par.Br = 1;
+    Par.ie[1] = Par.Ni;
 
 
-    Par.im = (long*) malloc(2*sizeof(long));
+
+    /* Upper bound on the modulator */
+
+    double *Ub = NULL; // we assume no upper bound on the modulator
+
+
+
+    /* Sampling coordinates of the input signal */
     
-    if (Par.im == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-
-    Par.im[0] = 1;
-    
-    Par.im[1] = Par.Ni; /* we ask for m estimate at the last iteration */
-
-
-    Par.ie = (long*) malloc(2*sizeof(long));
-    
-    if (Par.ie == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-
-    Par.ie[0] = 1;
-    
-    Par.ie[1] = Par.Ni; /* we ask for e estimate at the last iteration */
-
-
-
-    /* The arrays of modulator upper bound and signal sampling coordinates */
-
-    Ub = NULL; /* we assume no upper bound on the modulator */
-
-    t = NULL; /* we use no interpolation */
+    double *t = NULL; // we use no interpolation
 
 
 
     /* Output arrays */
 
-    out_m = (double*) malloc(Par.im[0]*n[0]*n[1]*sizeof(double));
+    double *out_m = (double*) malloc(Par.im[0]*n[0]*n[1]*sizeof(double));
     
-    if (out_m == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
+    double *out_c = (double*) malloc(Par.im[0]*n[0]*n[1]*sizeof(double));
     
-    
-    out_c = (double*) malloc(Par.im[0]*n[0]*n[1]*sizeof(double));
-    
-    if (out_c == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
-    
-    
-    out_e = (double*) malloc(Par.ie[0]*sizeof(double));
-    
-    if (out_e == NULL) {line=__LINE__-2; exitflag=-1; goto failed;}
+    double *out_e = (double*) malloc(Par.ie[0]*sizeof(double));
 
 
 
     /* Demodulation */
 
-    exitflag = f_ap_demodulation (s, &Par, Ub, t, out_m, out_e, &iter);
+    exitflag = f_apd_demodulation (s, &Par, Ub, t, out_m, out_e, &iter);
     
     if (exitflag != 0)
         
-        goto finish;
+        goto failed;
     
     else
     {
@@ -359,9 +338,7 @@ int main(void)
     
     if (fid == NULL)
     {
-        line = __LINE__-4;
-        
-        exitflag = -3;
+        exitflag = -1;
         
         goto failed;
     }
@@ -384,22 +361,18 @@ int main(void)
         
         if (exitflag != 0)
         {
-            line = __LINE__-4;
-            
-            exitflag = -4;
+            exitflag = -2;
             
             goto failed;
         }
     }
     
     
-    printf(STR_NL "Results saved." STR_NL);
+    printf(STR_NL "Results saved." STR_NL STR_NL);
     
     
     
     /* Output & Memory deallocation */
-    
-    goto finish;
     
     finish:
         
@@ -408,12 +381,6 @@ int main(void)
         free(c);
 
         free(s);
-
-        free(Par.Fs);
-
-        free(Par.Fc);
-
-        free(Par.Ns);
 
         free(Par.im);
 
@@ -431,21 +398,18 @@ int main(void)
         
         if (exitflag == -1)
             
-            fprintf (stderr, STR_NL "Error (line %d in %s): Out of memmory!" STR_NL,\
-                    line, __FUNCTION__);
+            fprintf (stderr, STR_NL "Error in example2.c: out_ex1.txt could not "\
+                             "be opened for writing!" STR_NL STR_NL);
         
-        else if (exitflag == -3)
+        else if (exitflag == -2)
             
-            fprintf (stderr, STR_NL "Error (line %d in %s): out_ex2.txt could not "\
-                             "be opened for writing!" STR_NL, line, __FUNCTION__);
+            fprintf (stderr, STR_NL "Error in example2.c: stream to out_ex1.txt "\
+                             "could not be closed!" STR_NL STR_NL);
+
+        else
         
-        if (exitflag == -4)
-            
-            fprintf (stderr, STR_NL "Error (line %d in %s): stream to out_ex2.txt "\
-                             "could not be closed!" STR_NL, line, __FUNCTION__);
+            f_apd_print_error(exitflag);
         
         goto finish;
     
-        
 }
-

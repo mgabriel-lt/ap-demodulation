@@ -19,8 +19,10 @@
 % A-3400 Klosterneuburg, Austria, +43-(0)2243 9000, twist@ist.ac.at, for commercial
 % licensing opportunities.
 %
-% All other inquiries should be directed to the author, Mantas Gabrielaitis,
-% mgabriel@ist.ac.at
+% See https://github.com/mgabriel-lt/ap-demodulation for the latest version of the
+% code and user-friendly explanations on the working principle, domains of
+% application, and advice on the usage of different AP Demodulation algorithms in
+% practice.
 
 
 
@@ -33,16 +35,16 @@
 % predefined one. Moreover, the intermediate estimates of the modulators and
 % infeasibility errors are saved and then visualized. This example illustrates how to
 % set the upper bound constraints on the modulator estimates and obtain intermediate
-% modulator estimates and infeasibility errors by using functions 'f_ap_demodulation'
-% and 'f_ap_demodulation_mex'. The results obtained also illustrate that imposing an
+% modulator estimates and infeasibility errors by using functions 'f_apd_demodulation'
+% and 'f_apd_demodulation_mex'. The results obtained also illustrate that imposing an
 % upper bound may reduce the rate of convergence of the AP algorithm in terms of
-% infeasibility error. However, that has no practical consequences on the convergence
-% in terms of the demodulation error.
+% infeasibility error. However, that may have negligible consequences for the
+% convergence in terms of the demodulation error.
 
 
 close all
 
-clear all
+clear all %#ok<CLALL>
 
 
 
@@ -54,7 +56,7 @@ fType = 'm'; % select between 'm' and 'mex'
 
 % Paths to the m and mex functions that perform AP-demodulation
 
-addpath ../library_m ../library_mex
+addpath ../libm ../libmex
 
 
 % Number of sample points
@@ -68,7 +70,7 @@ T = linspace(0,10,n)';
 
 
 
-% Modulator (LP-random)
+% Modulator (a low-pass-random signal)
 
 m = zeros(n,1);
 
@@ -88,7 +90,7 @@ m = m / max(m(:));
 
 
 
-% Carrier (random-spikes)
+% Carrier (a random-spikes signal)
 
 ci = [1, 38, 46, 27, 35, 30, 29, 32, 36, 37, 41, 38, 45, 32, 50, 27, 45, 38, 42, ...
     30, 32, 48, 53, 35, 45, 50, 51];
@@ -107,43 +109,51 @@ s = c .* m;
 
 
 
-% Demodulation (without UB)
+% Handle to the chosen demodulation function (m-file or mex)
 
 if strcmpi(fType, 'm')
 
-    fDemod = @(x,y,z) f_ap_demodulation (x, y, z);
+    fDemod = @(x,y,z) f_apd_demodulation (x, y, z);
     
 elseif strcmpi(fType, 'mex')
     
-    fDemod = @(x,y,z) f_ap_demodulation_mex (x, y, z);
+    fDemod = @(x,y,z) f_apd_demodulation_mex (x, y, z);
     
 end
 
 
-Par.Al = 'A';
+% Demodulation control parameters
 
-Par.Fs = 1 / (T(2)-T(1));
+Par.Al = 'A'; % algorithm
 
-Par.Fc = 10 * Par.Fs / n;
+Par.Fs = 1 / (T(2)-T(1)); % sampling frequency
 
-Par.Et = -1;
+Par.Fc = 10 * Par.Fs / n; % cutoff frequency
 
-Par.Ni = 10^3;
+Par.Et = -1; % infeasibility error tolerance (-1 -> completes all Par.Ni iterations)
 
-Par.im = 1:10^3;
+Par.Ni = 10^3; % maximum iteration number
 
-Par.ie = 1:10^3;
+Par.im = 1:10^3; % iterations to save modulator estimates at
 
+Par.ie = 1:10^3; % iterations to save infeasibility error estimates at
+
+
+
+% Demodulation (w/o upper bound assumption)
 
 [m_1, e1] = fDemod (s, Par, []);
 
 
 
-% Demodulation (with UB)
+% Upper bound on the modulator
 
 Ub = [0.59*ones(120,1); 0.27*ones(40,1); 0.59*ones(140,1); 1*ones(100,1); ...
     0.71*ones(623,1); 0.311];
 
+
+
+% Demodulation (w/ upper bound assumption)
 
 [m_2, e2] = fDemod (s, Par, Ub);
 
